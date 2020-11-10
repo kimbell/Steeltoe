@@ -3,11 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Steeltoe.Management.Endpoint.Metrics
 {
-    public class PrometheusEndpointOptions : AbstractEndpointOptions, IPrometheusEndpointOptions
+    public class PrometheusEndpointOptions : AbstractEndpointOptions, IPrometheusEndpointOptions, IOptions<PrometheusEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "prometheus";
         internal const string MANAGEMENT_INFO_PREFIX = "management:endpoints:prometheus";
 
         public PrometheusEndpointOptions()
@@ -27,5 +32,8 @@ namespace Steeltoe.Management.Endpoint.Metrics
 
             ExactMatch = false;
         }
+
+        /// <inheritdoc />
+        public PrometheusEndpointOptions Value => this; // for testing purposes
     }
 }

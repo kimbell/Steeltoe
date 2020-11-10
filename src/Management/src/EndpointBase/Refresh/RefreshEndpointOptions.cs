@@ -3,11 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Steeltoe.Management.Endpoint.Refresh
 {
-    public class RefreshEndpointOptions : AbstractEndpointOptions, IRefreshOptions
+    public class RefreshEndpointOptions : AbstractEndpointOptions, IRefreshOptions, IOptions<RefreshEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "refresh";
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints:refresh";
 
         public RefreshEndpointOptions()
@@ -30,5 +35,8 @@ namespace Steeltoe.Management.Endpoint.Refresh
                 RequiredPermissions = Permissions.RESTRICTED;
             }
         }
+
+        /// <inheritdoc />
+        public RefreshEndpointOptions Value => this; // for testing purposes
     }
 }

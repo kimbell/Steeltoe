@@ -69,6 +69,9 @@ namespace Steeltoe.Management.Endpoint.Health
 
             services.AddActuatorManagementOptions(config);
 
+            var managementOptions = config.GetSection(ManagementEndpointOptions.SECTION_NAME);
+            services.Configure<HealthEndpointOptions>(managementOptions.GetSection(HealthEndpointOptions.SECTION_NAME));
+
             var options = new HealthEndpointOptions(config);
             services.TryAddSingleton<IHealthOptions>(options);
             services.RegisterEndpointOptions(options);

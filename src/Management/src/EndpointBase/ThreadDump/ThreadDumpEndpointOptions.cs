@@ -3,11 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Steeltoe.Management.Endpoint.ThreadDump
 {
-    public class ThreadDumpEndpointOptions : AbstractEndpointOptions, IThreadDumpOptions
+    public class ThreadDumpEndpointOptions : AbstractEndpointOptions, IThreadDumpOptions, IOptions<ThreadDumpEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "dump";
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints:dump";
 
         public ThreadDumpEndpointOptions()
@@ -24,5 +29,8 @@ namespace Steeltoe.Management.Endpoint.ThreadDump
                 Id = "dump";
             }
         }
+
+        /// <inheritdoc />
+        public ThreadDumpEndpointOptions Value => this; // for testing purposes
     }
 }

@@ -3,11 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Steeltoe.Management.Endpoint.Mappings
 {
-    public class MappingsEndpointOptions : AbstractEndpointOptions, IMappingsOptions
+    public class MappingsEndpointOptions : AbstractEndpointOptions, IMappingsOptions, IOptions<MappingsEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "mappings";
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints:mappings";
 
         public MappingsEndpointOptions()
@@ -30,5 +35,8 @@ namespace Steeltoe.Management.Endpoint.Mappings
                 RequiredPermissions = Permissions.RESTRICTED;
             }
         }
+
+        /// <inheritdoc />
+        public MappingsEndpointOptions Value => this; // for testing purposes
     }
 }

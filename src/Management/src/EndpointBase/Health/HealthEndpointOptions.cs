@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.Security;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,12 @@ using System.Security.Claims;
 
 namespace Steeltoe.Management.Endpoint.Health
 {
-    public class HealthEndpointOptions : AbstractEndpointOptions, IHealthOptions
+    public class HealthEndpointOptions : AbstractEndpointOptions, IHealthOptions, IOptions<HealthEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "health";
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints:health";
 
         public HealthEndpointOptions()
@@ -71,5 +76,8 @@ namespace Steeltoe.Management.Endpoint.Health
         public string Role { get; set; }
 
         public Dictionary<string, HealthGroupOptions> Groups { get; set; } = new Dictionary<string, HealthGroupOptions>(StringComparer.InvariantCultureIgnoreCase);
+
+        /// <inheritdoc />
+        public HealthEndpointOptions Value => this; // for testing purposes
     }
 }

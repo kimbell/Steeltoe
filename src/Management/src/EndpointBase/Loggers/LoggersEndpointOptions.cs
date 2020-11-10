@@ -3,12 +3,17 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 
 namespace Steeltoe.Management.Endpoint.Loggers
 {
-    public class LoggersEndpointOptions : AbstractEndpointOptions, ILoggersOptions
+    public class LoggersEndpointOptions : AbstractEndpointOptions, ILoggersOptions, IOptions<LoggersEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "loggers";
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints:loggers";
 
         public LoggersEndpointOptions()
@@ -30,5 +35,8 @@ namespace Steeltoe.Management.Endpoint.Loggers
             AllowedVerbs = new List<string> { "Get", "Post" };
             ExactMatch = false;
         }
+
+        /// <inheritdoc />
+        public LoggersEndpointOptions Value => this; // for testing purposes
     }
 }

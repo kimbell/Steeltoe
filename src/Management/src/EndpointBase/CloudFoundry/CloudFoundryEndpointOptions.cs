@@ -3,10 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using System;
 
 namespace Steeltoe.Management.Endpoint.CloudFoundry
 {
-    public class CloudFoundryEndpointOptions : AbstractEndpointOptions, ICloudFoundryOptions
+    public class CloudFoundryEndpointOptions : AbstractEndpointOptions, ICloudFoundryOptions, IOptions<CloudFoundryEndpointOptions>
     {
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints:cloudfoundry";
         private const string VCAP_APPLICATION_ID_KEY = "vcap:application:application_id";
@@ -32,5 +34,8 @@ namespace Steeltoe.Management.Endpoint.CloudFoundry
         public string ApplicationId { get; set; }
 
         public string CloudFoundryApi { get; set; }
+
+        /// <inheritdoc />
+        public CloudFoundryEndpointOptions Value => this; // for testing purposes
     }
 }

@@ -3,11 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Steeltoe.Management.Endpoint.Metrics
 {
-    public class MetricsEndpointOptions : AbstractEndpointOptions, IMetricsEndpointOptions
+    public class MetricsEndpointOptions : AbstractEndpointOptions, IMetricsEndpointOptions, IOptions<MetricsEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "metrics";
         internal const string MANAGEMENT_INFO_PREFIX = "management:endpoints:metrics";
         internal const string DEFAULT_INGRESS_IGNORE_PATTERN = "/cloudfoundryapplication|/cloudfoundryapplication/.*|.*\\.png|.*\\.css|.*\\.js|.*\\.html|/favicon.ico|/hystrix.stream|.*\\.gif";
         internal const string DEFAULT_EGRESS_IGNORE_PATTERN = "/api/v2/spans|/v2/apps/.*/permissions";
@@ -45,5 +50,8 @@ namespace Steeltoe.Management.Endpoint.Metrics
         public string IngressIgnorePattern { get; set; }
 
         public string EgressIgnorePattern { get; set; }
+
+        /// <inheritdoc />
+        public MetricsEndpointOptions Value => this; // for testing purposes
     }
 }

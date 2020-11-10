@@ -3,11 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Steeltoe.Management.Endpoint.HeapDump
 {
-    public class HeapDumpEndpointOptions : AbstractEndpointOptions, IHeapDumpOptions
+    public class HeapDumpEndpointOptions : AbstractEndpointOptions, IHeapDumpOptions, IOptions<HeapDumpEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "heapdump";
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints:heapdump";
 
         public HeapDumpEndpointOptions()
@@ -24,5 +29,8 @@ namespace Steeltoe.Management.Endpoint.HeapDump
                 Id = "heapdump";
             }
         }
+
+        /// <inheritdoc />
+        public HeapDumpEndpointOptions Value => this; // for testing purposes
     }
 }

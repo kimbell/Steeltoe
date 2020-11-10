@@ -3,13 +3,18 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 
 namespace Steeltoe.Management.Endpoint
 {
-    public class ManagementEndpointOptions : IManagementOptions
+    public class ManagementEndpointOptions : IManagementOptions, IOptions<ManagementEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "management:endpoints";
         private const string DEFAULT_PATH = "/actuator";
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints";
 
@@ -43,5 +48,8 @@ namespace Steeltoe.Management.Endpoint
         public List<IEndpointOptions> EndpointOptions { get; set; }
 
         public bool UseStatusCodeFromResponse { get; set; } = true;
+
+        /// <inheritdoc />
+        public ManagementEndpointOptions Value => this; // for testing purposes
     }
 }

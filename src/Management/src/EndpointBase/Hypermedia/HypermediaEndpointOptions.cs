@@ -3,11 +3,16 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Steeltoe.Management.Endpoint.Hypermedia
 {
-    public class HypermediaEndpointOptions : AbstractEndpointOptions, IActuatorHypermediaOptions
+    public class HypermediaEndpointOptions : AbstractEndpointOptions, IActuatorHypermediaOptions, IOptions<HypermediaEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "actuator";
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints:actuator";
 
         public HypermediaEndpointOptions()
@@ -20,5 +25,8 @@ namespace Steeltoe.Management.Endpoint.Hypermedia
             : base(MANAGEMENT_INFO_PREFIX, config)
         {
         }
+
+        /// <inheritdoc />
+        public HypermediaEndpointOptions Value => this; // for testing purposes
     }
 }
