@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Info;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,8 @@ namespace Steeltoe.Management.Endpoint.Info
         private readonly IList<IInfoContributor> _contributors;
         private readonly ILogger<InfoEndpoint> _logger;
 
-        public InfoEndpoint(IInfoOptions options, IEnumerable<IInfoContributor> contributors, ILogger<InfoEndpoint> logger = null)
-            : base(options)
+        public InfoEndpoint(IOptionsMonitor<InfoEndpointOptions> options, IEnumerable<IInfoContributor> contributors, ILogger<InfoEndpoint> logger = null)
+            : base(options?.CurrentValue)
         {
             _logger = logger;
             _contributors = contributors.ToList();

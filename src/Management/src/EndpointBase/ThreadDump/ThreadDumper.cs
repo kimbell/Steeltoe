@@ -6,6 +6,7 @@ using Microsoft.Diagnostics.Runtime;
 using Microsoft.DiaSymReader;
 using Microsoft.DiaSymReader.PortablePdb;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,10 +19,10 @@ namespace Steeltoe.Management.Endpoint.ThreadDump
     {
         private const int PdbHiddenLine = 0xFEEFEE;
         private readonly ILogger<ThreadDumper> _logger;
-        private readonly IThreadDumpOptions _options;
+        private readonly IOptionsMonitor<ThreadDumpEndpointOptions> _options;
         private readonly Dictionary<PdbInfo, ISymUnmanagedReader> _pdbReaders = new Dictionary<PdbInfo, ISymUnmanagedReader>();
 
-        public ThreadDumper(IThreadDumpOptions options, ILogger<ThreadDumper> logger = null)
+        public ThreadDumper(IOptionsMonitor<ThreadDumpEndpointOptions> options, ILogger<ThreadDumper> logger = null)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = logger;

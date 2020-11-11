@@ -8,7 +8,8 @@ using System;
 
 namespace Steeltoe.Management.Endpoint.DbMigrations
 {
-    public class DbMigrationsEndpointOptions : AbstractEndpointOptions, IDbMigrationsOptions, IOptions<DbMigrationsEndpointOptions>
+    public class DbMigrationsEndpointOptions : AbstractEndpointOptions, IDbMigrationsOptions,
+        IOptionsMonitor<DbMigrationsEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -38,7 +39,10 @@ namespace Steeltoe.Management.Endpoint.DbMigrations
 
         public string[] KeysToSanitize => Array.Empty<string>();
 
-        /// <inheritdoc />
-        public DbMigrationsEndpointOptions Value => this; // for testing purposes
+        public DbMigrationsEndpointOptions CurrentValue => this;
+
+        public DbMigrationsEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<DbMigrationsEndpointOptions, string> listener) => null;
     }
 }

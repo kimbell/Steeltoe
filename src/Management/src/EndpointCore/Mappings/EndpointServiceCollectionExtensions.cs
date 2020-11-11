@@ -31,11 +31,9 @@ namespace Steeltoe.Management.Endpoint.Mappings
             }
 
             services.AddActuatorManagementOptions(config);
-            var options = new MappingsEndpointOptions(config);
-            services.TryAddSingleton<IMappingsOptions>(options);
-            services.RegisterEndpointOptions(options);
+            services.AddEndpointEntry<MappingsEndpointOptions, MappingsEndpoint>(config, MappingsEndpointOptions.SECTION_NAME);
+
             services.TryAddSingleton<IRouteMappings, RouteMappings>();
-            services.TryAddSingleton<MappingsEndpoint>();
         }
     }
 }

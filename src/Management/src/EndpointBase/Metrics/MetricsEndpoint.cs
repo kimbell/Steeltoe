@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OpenTelemetry.Metrics.Export;
 using Steeltoe.Management.OpenTelemetry.Metrics.Exporter;
 using Steeltoe.Management.OpenTelemetry.Metrics.Processor;
@@ -21,8 +22,8 @@ namespace Steeltoe.Management.Endpoint.Metrics
 
         private List<ProcessedMetric<double>> DoubleMetrics { get; set; }
 
-        public MetricsEndpoint(IMetricsEndpointOptions options, SteeltoeExporter exporter, ILogger<MetricsEndpoint> logger = null)
-            : base(options)
+        public MetricsEndpoint(IOptionsMonitor<MetricsEndpointOptions> options, SteeltoeExporter exporter, ILogger<MetricsEndpoint> logger = null)
+            : base(options?.CurrentValue)
         {
             _exporter = exporter ?? throw new ArgumentNullException(nameof(exporter));
             _logger = logger;

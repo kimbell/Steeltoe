@@ -4,6 +4,7 @@
 
 using Microsoft.Diagnostics.NETCore.Client;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Diagnostics;
 
@@ -13,9 +14,9 @@ namespace Steeltoe.Management.Endpoint.HeapDump
     {
         private readonly string _basePathOverride;
         private readonly ILogger<LinuxHeapDumper> _logger;
-        private readonly IHeapDumpOptions _options;
+        private readonly IOptionsMonitor<HeapDumpEndpointOptions> _options;
 
-        public LinuxHeapDumper(IHeapDumpOptions options, string basePathOverride = null, ILogger<LinuxHeapDumper> logger = null)
+        public LinuxHeapDumper(IOptionsMonitor<HeapDumpEndpointOptions> options, string basePathOverride = null, ILogger<LinuxHeapDumper> logger = null)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = logger;

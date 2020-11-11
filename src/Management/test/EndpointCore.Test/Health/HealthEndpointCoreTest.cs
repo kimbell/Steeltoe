@@ -20,7 +20,7 @@ namespace Steeltoe.Management.Endpoint.Health.Test
 {
     public class HealthEndpointCoreTest : BaseTest
     {
-        private readonly IHealthOptions options = new HealthEndpointOptions();
+        private readonly IOptionsMonitor<HealthEndpointOptions> options = new HealthEndpointOptions();
         private readonly IHealthAggregator aggregator = new DefaultHealthAggregator();
         private readonly ServiceProvider provider = new ServiceCollection().BuildServiceProvider();
 
@@ -185,7 +185,7 @@ namespace Steeltoe.Management.Endpoint.Health.Test
         public void InvokeWithGroupFiltersMSFTResults()
         {
             // arrange
-            options.Groups.Add("msft", new HealthGroupOptions { Include = "up,privatememory" });
+            options.CurrentValue.Groups.Add("msft", new HealthGroupOptions { Include = "up,privatememory" });
             var contribs = new List<IHealthContributor>() { new UnknownContributor(), new UpContributor() };
             var ep = new HealthEndpointCore(options, new HealthRegistrationsAggregator(), contribs, ServiceProviderWithMSFTHealth(), provider);
             var context = Substitute.For<ISecurityContext>();

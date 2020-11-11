@@ -4,10 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Steeltoe.Management.Endpoint.Info
 {
-    public class InfoEndpointOptions : AbstractEndpointOptions, IInfoOptions, IOptions<InfoEndpointOptions>
+    public class InfoEndpointOptions : AbstractEndpointOptions, IInfoOptions,
+        IOptionsMonitor<InfoEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -36,7 +38,10 @@ namespace Steeltoe.Management.Endpoint.Info
             }
         }
 
-        /// <inheritdoc />
-        public InfoEndpointOptions Value => this; // for testing purposes
+        public InfoEndpointOptions CurrentValue => this;
+
+        public InfoEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<InfoEndpointOptions, string> listener) => null;
     }
 }

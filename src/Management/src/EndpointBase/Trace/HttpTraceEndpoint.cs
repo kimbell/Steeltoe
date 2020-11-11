@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace Steeltoe.Management.Endpoint.Trace
@@ -12,8 +13,8 @@ namespace Steeltoe.Management.Endpoint.Trace
         private readonly ILogger<HttpTraceEndpoint> _logger;
         private readonly IHttpTraceRepository _traceRepo;
 
-        public HttpTraceEndpoint(ITraceOptions options, IHttpTraceRepository traceRepository, ILogger<HttpTraceEndpoint> logger = null)
-            : base(options)
+        public HttpTraceEndpoint(IOptionsMonitor<TraceEndpointOptions> options, IHttpTraceRepository traceRepository, ILogger<HttpTraceEndpoint> logger = null)
+            : base(options?.CurrentValue)
         {
             _traceRepo = traceRepository ?? throw new ArgumentNullException(nameof(traceRepository));
             _logger = logger;

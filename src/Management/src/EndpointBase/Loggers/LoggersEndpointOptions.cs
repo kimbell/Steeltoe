@@ -4,11 +4,13 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 
 namespace Steeltoe.Management.Endpoint.Loggers
 {
-    public class LoggersEndpointOptions : AbstractEndpointOptions, ILoggersOptions, IOptions<LoggersEndpointOptions>
+    public class LoggersEndpointOptions : AbstractEndpointOptions, ILoggersOptions,
+        IOptionsMonitor<LoggersEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -36,7 +38,10 @@ namespace Steeltoe.Management.Endpoint.Loggers
             ExactMatch = false;
         }
 
-        /// <inheritdoc />
-        public LoggersEndpointOptions Value => this; // for testing purposes
+        public LoggersEndpointOptions CurrentValue => this;
+
+        public LoggersEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<LoggersEndpointOptions, string> listener) => null;
     }
 }

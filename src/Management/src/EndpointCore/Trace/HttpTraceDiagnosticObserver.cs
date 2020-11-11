@@ -5,6 +5,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common.Diagnostics;
 using System;
 using System.Collections.Concurrent;
@@ -24,9 +25,9 @@ namespace Steeltoe.Management.Endpoint.Trace
 
         private static readonly DateTime BaseTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         private readonly ILogger<TraceDiagnosticObserver> _logger;
-        private readonly ITraceOptions _options;
+        private readonly IOptionsMonitor<HttpTraceEndpointOptions> _options;
 
-        public HttpTraceDiagnosticObserver(ITraceOptions options, ILogger<TraceDiagnosticObserver> logger = null)
+        public HttpTraceDiagnosticObserver(IOptionsMonitor<HttpTraceEndpointOptions> options, ILogger<TraceDiagnosticObserver> logger = null)
             : base(OBSERVER_NAME, DIAGNOSTIC_NAME, logger)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -63,7 +64,7 @@ namespace Steeltoe.Management.Endpoint.Trace
                 var trace = MakeTrace(context, current.Duration);
                 _queue.Enqueue(trace);
 
-                if (_queue.Count > _options.Capacity && !_queue.TryDequeue(out _))
+                if (_queue.Count > _options.CurrentValue.Capacity && !_queue.TryDequeue(out _))
                 {
                     _logger?.LogDebug("Stop - Dequeue failed");
                 }

@@ -4,6 +4,7 @@
 
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Diagnostics;
 using System;
 using System.Diagnostics;
@@ -17,9 +18,9 @@ namespace Steeltoe.Management.Endpoint.HeapDump
         private readonly string _basePathOverride;
 
         private readonly ILogger<WindowsHeapDumper> _logger;
-        private readonly IHeapDumpOptions _options;
+        private readonly IOptionsMonitor<HeapDumpEndpointOptions> _options;
 
-        public WindowsHeapDumper(IHeapDumpOptions options, string basePathOverride = null, ILogger<WindowsHeapDumper> logger = null)
+        public WindowsHeapDumper(IOptionsMonitor<HeapDumpEndpointOptions> options, string basePathOverride = null, ILogger<WindowsHeapDumper> logger = null)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = logger;

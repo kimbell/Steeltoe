@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.Test;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Steeltoe.Management.Endpoint.Refresh.Test
         [Fact]
         public void Constructor_ThrowsIfNulls()
         {
-            IRefreshOptions options = null;
+            IOptionsMonitor<RefreshEndpointOptions> options = null;
             IConfigurationRoot configuration = null;
 
             Assert.Throws<ArgumentNullException>(() => new RefreshEndpoint(options, configuration));

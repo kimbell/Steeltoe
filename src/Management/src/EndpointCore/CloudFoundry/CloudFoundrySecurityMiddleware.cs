@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common;
 using System;
 using System.Collections.Generic;
@@ -16,37 +17,37 @@ namespace Steeltoe.Management.Endpoint.CloudFoundry
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<CloudFoundrySecurityMiddleware> _logger;
-        private readonly ICloudFoundryOptions _options;
+        private readonly IOptionsMonitor<CloudFoundryEndpointOptions> _options;
         private readonly IManagementOptions _mgmtOptions;
         private readonly SecurityBase _base;
 
-        public CloudFoundrySecurityMiddleware(RequestDelegate next, ICloudFoundryOptions options, CloudFoundryManagementOptions mgmtOptions, ILogger<CloudFoundrySecurityMiddleware> logger = null)
+        public CloudFoundrySecurityMiddleware(RequestDelegate next, IOptionsMonitor<CloudFoundryEndpointOptions> options, CloudFoundryManagementOptions mgmtOptions, ILogger<CloudFoundrySecurityMiddleware> logger = null)
         {
             _next = next;
             _logger = logger;
             _options = options;
             _mgmtOptions = mgmtOptions;
 
-            _base = new SecurityBase(options, _mgmtOptions, logger);
+            _base = new SecurityBase(options.CurrentValue, _mgmtOptions, logger);
         }
 
         public async Task Invoke(HttpContext context)
         {
             _logger?.LogDebug("Invoke({0}) contextPath: {1}", context.Request.Path.Value, _mgmtOptions.Path);
 
-            bool isEndpointExposed = _mgmtOptions == null ? true : _options.IsExposed(_mgmtOptions);
+            bool isEndpointExposed = _mgmtOptions == null ? true : _options.CurrentValue.IsExposed(_mgmtOptions);
 
             if (Platform.IsCloudFoundry
                 && isEndpointExposed
                 && _base.IsCloudFoundryRequest(context.Request.Path))
             {
-                if (string.IsNullOrEmpty(_options.ApplicationId))
+                if (string.IsNullOrEmpty(_options.CurrentValue.ApplicationId))
                 {
                     await ReturnError(context, new SecurityResult(HttpStatusCode.ServiceUnavailable, _base.APPLICATION_ID_MISSING_MESSAGE)).ConfigureAwait(false);
                     return;
                 }
 
-                if (string.IsNullOrEmpty(_options.CloudFoundryApi))
+                if (string.IsNullOrEmpty(_options.CurrentValue.CloudFoundryApi))
                 {
                     await ReturnError(context, new SecurityResult(HttpStatusCode.ServiceUnavailable, _base.CLOUDFOUNDRY_API_MISSING_MESSAGE)).ConfigureAwait(false);
                     return;

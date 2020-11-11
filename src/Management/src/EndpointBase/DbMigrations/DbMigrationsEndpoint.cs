@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -45,19 +46,19 @@ namespace Steeltoe.Management.Endpoint.DbMigrations
         private readonly ILogger<DbMigrationsEndpoint> _logger;
 
         public DbMigrationsEndpoint(
-            IDbMigrationsOptions options,
+            IOptionsMonitor<DbMigrationsEndpointOptions> options,
             IServiceProvider container,
             ILogger<DbMigrationsEndpoint> logger = null)
-            : this(options, container, new DbMigrationsEndpointHelper(), logger)
+            : this(options?.CurrentValue, container, new DbMigrationsEndpointHelper(), logger)
         {
         }
 
         public DbMigrationsEndpoint(
-            IDbMigrationsOptions options,
+            IOptionsMonitor<DbMigrationsEndpointOptions> options,
             IServiceProvider container,
             DbMigrationsEndpointHelper endpointHelper,
             ILogger<DbMigrationsEndpoint> logger = null)
-            : base(options)
+            : base(options?.CurrentValue)
         {
             _container = container;
             _endpointHelper = endpointHelper;

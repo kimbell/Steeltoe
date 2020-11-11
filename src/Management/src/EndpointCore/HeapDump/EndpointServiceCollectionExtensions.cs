@@ -40,10 +40,7 @@ namespace Steeltoe.Management.Endpoint.HeapDump
             if (IsHeapDumpSupported())
             {
                 services.AddActuatorManagementOptions(config);
-
-                var options = new HeapDumpEndpointOptions(config);
-                services.TryAddSingleton<IHeapDumpOptions>(options);
-                services.RegisterEndpointOptions(options);
+                services.AddEndpointEntry<HeapDumpEndpointOptions, HeapDumpEndpoint>(config, HeapDumpEndpointOptions.SECTION_NAME);
 
                 if (Platform.IsWindows)
                 {
@@ -53,8 +50,6 @@ namespace Steeltoe.Management.Endpoint.HeapDump
                 {
                     services.TryAddSingleton<IHeapDumper, LinuxHeapDumper>();
                 }
-
-                services.TryAddSingleton<HeapDumpEndpoint>();
             }
         }
     }

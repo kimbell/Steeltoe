@@ -3,11 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace Steeltoe.Management.Endpoint.Metrics
 {
-    public class MetricsObserverOptions : IMetricsObserverOptions
+    public class MetricsObserverOptions : IMetricsObserverOptions,
+        IOptionsMonitor<MetricsObserverOptions>
     {
         internal const string MANAGEMENT_METRICS_PREFIX = "management:metrics:observer";
         internal const string DEFAULT_INGRESS_IGNORE_PATTERN = "/cloudfoundryapplication|/cloudfoundryapplication/.*|.*\\.png|.*\\.css|.*\\.js|.*\\.html|/favicon.ico|/hystrix.stream|.*\\.gif";
@@ -61,5 +63,11 @@ namespace Steeltoe.Management.Endpoint.Metrics
         public bool HttpClientDesktop { get; set; } = false;
 
         public bool HystrixEvents { get; set; } = false;
+
+        public MetricsObserverOptions CurrentValue => this;
+
+        public MetricsObserverOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<MetricsObserverOptions, string> listener) => null;
     }
 }

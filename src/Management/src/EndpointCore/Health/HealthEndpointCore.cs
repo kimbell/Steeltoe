@@ -21,7 +21,7 @@ namespace Steeltoe.Management.Endpoint.Health
         private readonly IList<IHealthContributor> _contributors;
         private readonly ILogger<HealthEndpoint> _logger;
 
-        public HealthEndpointCore(IHealthOptions options, IHealthAggregator aggregator, IEnumerable<IHealthContributor> contributors, IOptionsMonitor<HealthCheckServiceOptions> serviceOptions, IServiceProvider provider, ILogger<HealthEndpoint> logger = null)
+        public HealthEndpointCore(IOptionsMonitor<HealthEndpointOptions> options, IHealthAggregator aggregator, IEnumerable<IHealthContributor> contributors, IOptionsMonitor<HealthCheckServiceOptions> serviceOptions, IServiceProvider provider, ILogger<HealthEndpoint> logger = null)
             : base(options, aggregator, contributors, logger)
         {
             _aggregator = aggregator ?? throw new ArgumentNullException(nameof(aggregator));

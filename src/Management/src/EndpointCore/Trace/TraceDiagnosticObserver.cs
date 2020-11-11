@@ -5,6 +5,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Steeltoe.Common.Diagnostics;
 using System;
@@ -24,9 +25,9 @@ namespace Steeltoe.Management.Endpoint.Trace
 
         private static readonly DateTime BaseTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         private readonly ILogger<TraceDiagnosticObserver> _logger;
-        private readonly ITraceOptions _options;
+        private readonly IOptionsMonitor<TraceEndpointOptions> _options;
 
-        public TraceDiagnosticObserver(ITraceOptions options, ILogger<TraceDiagnosticObserver> logger = null)
+        public TraceDiagnosticObserver(IOptionsMonitor<TraceEndpointOptions> options, ILogger<TraceDiagnosticObserver> logger = null)
             : base(OBSERVER_NAME, DIAGNOSTIC_NAME, logger)
         {
             _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -64,7 +65,7 @@ namespace Steeltoe.Management.Endpoint.Trace
                 var trace = MakeTrace(context, current.Duration);
                 _queue.Enqueue(trace);
 
-                if (_queue.Count > _options.Capacity && !_queue.TryDequeue(out _))
+                if (_queue.Count > _options.CurrentValue.Capacity && !_queue.TryDequeue(out _))
                 {
                     _logger?.LogDebug("Stop - Dequeue failed");
                 }
@@ -75,6 +76,7 @@ namespace Steeltoe.Management.Endpoint.Trace
         {
             var request = context.Request;
             var response = context.Response;
+            var options = _options.CurrentValue;
 
             var details = new Dictionary<string, object>
             {
@@ -85,52 +87,52 @@ namespace Steeltoe.Management.Endpoint.Trace
             var headers = new Dictionary<string, object>();
             details.Add("headers", headers);
 
-            if (_options.AddRequestHeaders)
+            if (options.AddRequestHeaders)
             {
                 headers.Add("request", GetHeaders(request.Headers));
             }
 
-            if (_options.AddResponseHeaders)
+            if (options.AddResponseHeaders)
             {
                 headers.Add("response", GetHeaders(response.StatusCode, response.Headers));
             }
 
-            if (_options.AddPathInfo)
+            if (options.AddPathInfo)
             {
                 details.Add("pathInfo", GetPathInfo(request));
             }
 
-            if (_options.AddUserPrincipal)
+            if (options.AddUserPrincipal)
             {
                 details.Add("userPrincipal", GetUserPrincipal(context));
             }
 
-            if (_options.AddParameters)
+            if (options.AddParameters)
             {
                 details.Add("parameters", GetRequestParameters(request));
             }
 
-            if (_options.AddQueryString)
+            if (options.AddQueryString)
             {
                 details.Add("query", request.QueryString.Value);
             }
 
-            if (_options.AddAuthType)
+            if (options.AddAuthType)
             {
                 details.Add("authType", GetAuthType(request)); // TODO
             }
 
-            if (_options.AddRemoteAddress)
+            if (options.AddRemoteAddress)
             {
                 details.Add("remoteAddress", GetRemoteAddress(context));
             }
 
-            if (_options.AddSessionId)
+            if (options.AddSessionId)
             {
                 details.Add("sessionId", GetSessionId(context));
             }
 
-            if (_options.AddTimeTaken)
+            if (options.AddTimeTaken)
             {
                 details.Add("timeTaken", GetTimeTaken(duration));
             }

@@ -4,10 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Steeltoe.Management.Endpoint.ThreadDump
 {
-    public class ThreadDumpEndpointOptions : AbstractEndpointOptions, IThreadDumpOptions, IOptions<ThreadDumpEndpointOptions>
+    public class ThreadDumpEndpointOptions : AbstractEndpointOptions, IThreadDumpOptions,
+        IOptionsMonitor<ThreadDumpEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -30,7 +32,10 @@ namespace Steeltoe.Management.Endpoint.ThreadDump
             }
         }
 
-        /// <inheritdoc />
-        public ThreadDumpEndpointOptions Value => this; // for testing purposes
+        public ThreadDumpEndpointOptions CurrentValue => this;
+
+        public ThreadDumpEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<ThreadDumpEndpointOptions, string> listener) => null;
     }
 }

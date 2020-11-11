@@ -30,10 +30,9 @@ namespace Steeltoe.Management.Endpoint.DbMigrations
                 throw new ArgumentNullException(nameof(config));
             }
 
+            services.AddEndpointEntry<DbMigrationsEndpointOptions, DbMigrationsEndpoint>(config, DbMigrationsEndpointOptions.SECTION_NAME);
+
             services.AddActuatorManagementOptions(config);
-            var options = new DbMigrationsEndpointOptions(config);
-            services.TryAddSingleton<IDbMigrationsOptions>(options);
-            services.RegisterEndpointOptions(options);
             services.TryAddSingleton<DbMigrationsEndpoint>();
         }
     }

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common.HealthChecks;
 using Steeltoe.Management.Endpoint.Security;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Steeltoe.Management.Endpoint.Health.Test
 {
     internal class TestHealthEndpoint : HealthEndpoint
     {
-        public TestHealthEndpoint(IHealthOptions options, IHealthAggregator aggregator, IEnumerable<IHealthContributor> contributors, ILogger<HealthEndpoint> logger = null)
+        public TestHealthEndpoint(IOptionsMonitor<HealthEndpointOptions> options, IHealthAggregator aggregator, IEnumerable<IHealthContributor> contributors, ILogger<HealthEndpoint> logger = null)
             : base(options, aggregator, contributors, logger)
         {
         }

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common;
 using Steeltoe.Extensions.Logging;
 using System;
@@ -29,8 +30,8 @@ namespace Steeltoe.Management.Endpoint.Loggers
         private readonly ILogger<LoggersEndpoint> _logger;
         private readonly IDynamicLoggerProvider _cloudFoundryLoggerProvider;
 
-        public LoggersEndpoint(ILoggersOptions options, IDynamicLoggerProvider cloudFoundryLoggerProvider, ILogger<LoggersEndpoint> logger = null)
-            : base(options)
+        public LoggersEndpoint(IOptionsMonitor<LoggersEndpointOptions> options, IDynamicLoggerProvider cloudFoundryLoggerProvider, ILogger<LoggersEndpoint> logger = null)
+            : base(options?.CurrentValue)
         {
             _cloudFoundryLoggerProvider = cloudFoundryLoggerProvider;
             _logger = logger;

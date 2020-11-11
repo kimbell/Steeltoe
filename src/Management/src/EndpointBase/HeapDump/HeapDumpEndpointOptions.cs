@@ -4,10 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Steeltoe.Management.Endpoint.HeapDump
 {
-    public class HeapDumpEndpointOptions : AbstractEndpointOptions, IHeapDumpOptions, IOptions<HeapDumpEndpointOptions>
+    public class HeapDumpEndpointOptions : AbstractEndpointOptions, IHeapDumpOptions,
+        IOptionsMonitor<HeapDumpEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -30,7 +32,10 @@ namespace Steeltoe.Management.Endpoint.HeapDump
             }
         }
 
-        /// <inheritdoc />
-        public HeapDumpEndpointOptions Value => this; // for testing purposes
+        public HeapDumpEndpointOptions CurrentValue => this;
+
+        public HeapDumpEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<HeapDumpEndpointOptions, string> listener) => null;
     }
 }

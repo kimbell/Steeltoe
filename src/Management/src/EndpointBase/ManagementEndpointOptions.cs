@@ -9,7 +9,8 @@ using System.Collections.Generic;
 
 namespace Steeltoe.Management.Endpoint
 {
-    public class ManagementEndpointOptions : IManagementOptions, IOptions<ManagementEndpointOptions>
+    public class ManagementEndpointOptions : IManagementOptions,
+        IOptionsMonitor<ManagementEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -49,7 +50,10 @@ namespace Steeltoe.Management.Endpoint
 
         public bool UseStatusCodeFromResponse { get; set; } = true;
 
-        /// <inheritdoc />
-        public ManagementEndpointOptions Value => this; // for testing purposes
+        public ManagementEndpointOptions CurrentValue => this;
+
+        public ManagementEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<ManagementEndpointOptions, string> listener) => null;
     }
 }

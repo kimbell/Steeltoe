@@ -36,23 +36,20 @@ namespace Steeltoe.Management.Endpoint.ThreadDump
             }
 
             services.AddActuatorManagementOptions(config);
-            var options = new ThreadDumpEndpointOptions(config);
             if (version == MediaTypeVersion.V1)
             {
-                services.TryAddSingleton<ThreadDumpEndpoint>();
+                services.AddEndpointEntry<ThreadDumpEndpointOptions, ThreadDumpEndpoint>(config, ThreadDumpEndpointOptions.SECTION_NAME);
             }
             else
             {
-                if (options.Id == "dump")
-                {
-                    options.Id = "threaddump";
-                }
-
-                services.TryAddSingleton<ThreadDumpEndpoint_v2>();
+                // CRK TODO
+                // if (options.Id == "dump")
+                // {
+                //     options.Id = "threaddump";
+                // }
+                services.AddEndpointEntry<ThreadDumpEndpointOptions, ThreadDumpEndpoint_v2>(config, ThreadDumpEndpointOptions.SECTION_NAME);
             }
 
-            services.TryAddSingleton<IThreadDumpOptions>(options);
-            services.RegisterEndpointOptions(options);
             services.TryAddSingleton<IThreadDumper, ThreadDumper>();
         }
     }

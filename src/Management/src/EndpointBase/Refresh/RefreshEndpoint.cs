@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 
@@ -14,8 +15,8 @@ namespace Steeltoe.Management.Endpoint.Refresh
         private readonly ILogger<RefreshEndpoint> _logger;
         private readonly IConfiguration _configuration;
 
-        public RefreshEndpoint(IRefreshOptions options, IConfiguration configuration, ILogger<RefreshEndpoint> logger = null)
-            : base(options)
+        public RefreshEndpoint(IOptionsMonitor<RefreshEndpointOptions> options, IConfiguration configuration, ILogger<RefreshEndpoint> logger = null)
+            : base(options?.CurrentValue)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _logger = logger;

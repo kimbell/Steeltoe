@@ -4,10 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Steeltoe.Management.Endpoint.Refresh
 {
-    public class RefreshEndpointOptions : AbstractEndpointOptions, IRefreshOptions, IOptions<RefreshEndpointOptions>
+    public class RefreshEndpointOptions : AbstractEndpointOptions, IRefreshOptions,
+        IOptionsMonitor<RefreshEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -36,7 +38,10 @@ namespace Steeltoe.Management.Endpoint.Refresh
             }
         }
 
-        /// <inheritdoc />
-        public RefreshEndpointOptions Value => this; // for testing purposes
+        public RefreshEndpointOptions CurrentValue => this;
+
+        public RefreshEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<RefreshEndpointOptions, string> listener) => null;
     }
 }

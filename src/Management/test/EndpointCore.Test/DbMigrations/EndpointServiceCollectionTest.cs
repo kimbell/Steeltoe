@@ -47,8 +47,6 @@ namespace Steeltoe.Management.Endpoint.DbMigrations.Test
             services.AddDbMigrationsActuator(config);
 
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<IDbMigrationsOptions>();
-            options.Should().NotBeNull();
             var ep = serviceProvider.GetService<DbMigrationsEndpoint>();
             ep.Should().NotBeNull();
         }

@@ -13,6 +13,7 @@ using Steeltoe.Management.Endpoint.Health;
 using Steeltoe.Management.Endpoint.HeapDump;
 using Steeltoe.Management.Endpoint.Hypermedia;
 using Steeltoe.Management.Endpoint.Info;
+using Steeltoe.Management.Endpoint.Internal;
 using Steeltoe.Management.Endpoint.Loggers;
 using Steeltoe.Management.Endpoint.Mappings;
 using Steeltoe.Management.Endpoint.Metrics;
@@ -114,7 +115,7 @@ namespace Steeltoe.Management.Endpoint
             }
 
             var (middleware, optionsType) = LookupMiddleware(typeEndpoint);
-            var options = endpoints.ServiceProvider.GetService(optionsType) as IEndpointOptions;
+            var options = endpoints.ServiceProvider.FindEndpointOptionsForMiddlewareType(typeEndpoint);
             var mgmtOptionsCollection = endpoints.ServiceProvider.GetServices<IManagementOptions>();
             var builder = conventionBuilder ?? new EndpointCollectionConventionBuilder();
 

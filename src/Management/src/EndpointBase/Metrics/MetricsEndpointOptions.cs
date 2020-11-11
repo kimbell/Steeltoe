@@ -4,10 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Steeltoe.Management.Endpoint.Metrics
 {
-    public class MetricsEndpointOptions : AbstractEndpointOptions, IMetricsEndpointOptions, IOptions<MetricsEndpointOptions>
+    public class MetricsEndpointOptions : AbstractEndpointOptions, IMetricsEndpointOptions,
+        IOptionsMonitor<MetricsEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -51,7 +53,10 @@ namespace Steeltoe.Management.Endpoint.Metrics
 
         public string EgressIgnorePattern { get; set; }
 
-        /// <inheritdoc />
-        public MetricsEndpointOptions Value => this; // for testing purposes
+        public MetricsEndpointOptions CurrentValue => this;
+
+        public MetricsEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<MetricsEndpointOptions, string> listener) => null;
     }
 }

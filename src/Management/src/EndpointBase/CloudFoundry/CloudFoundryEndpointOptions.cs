@@ -8,8 +8,13 @@ using System;
 
 namespace Steeltoe.Management.Endpoint.CloudFoundry
 {
-    public class CloudFoundryEndpointOptions : AbstractEndpointOptions, ICloudFoundryOptions, IOptions<CloudFoundryEndpointOptions>
+    public class CloudFoundryEndpointOptions : AbstractEndpointOptions, ICloudFoundryOptions,
+        IOptionsMonitor<CloudFoundryEndpointOptions>
     {
+        /// <summary>
+        /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
+        /// </summary>
+        public const string SECTION_NAME = "cloudfoundry";
         private const string MANAGEMENT_INFO_PREFIX = "management:endpoints:cloudfoundry";
         private const string VCAP_APPLICATION_ID_KEY = "vcap:application:application_id";
         private const string VCAP_APPLICATION_CLOUDFOUNDRY_API_KEY = "vcap:application:cf_api";
@@ -35,7 +40,10 @@ namespace Steeltoe.Management.Endpoint.CloudFoundry
 
         public string CloudFoundryApi { get; set; }
 
-        /// <inheritdoc />
-        public CloudFoundryEndpointOptions Value => this; // for testing purposes
+        public CloudFoundryEndpointOptions CurrentValue => this;
+
+        public CloudFoundryEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<CloudFoundryEndpointOptions, string> listener) => null;
     }
 }

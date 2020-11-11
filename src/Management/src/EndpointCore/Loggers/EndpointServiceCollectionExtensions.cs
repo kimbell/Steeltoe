@@ -4,7 +4,6 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Steeltoe.Management.Endpoint.Hypermedia;
 using System;
 
@@ -32,10 +31,7 @@ namespace Steeltoe.Management.Endpoint.Loggers
 
             services.AddActuatorManagementOptions(config);
 
-            var options = new LoggersEndpointOptions(config);
-            services.TryAddSingleton<ILoggersOptions>(options);
-            services.RegisterEndpointOptions(options);
-            services.TryAddSingleton<LoggersEndpoint>();
+            services.AddEndpointEntry<LoggersEndpointOptions, LoggersEndpoint>(config, LoggersEndpointOptions.SECTION_NAME);
         }
     }
 }

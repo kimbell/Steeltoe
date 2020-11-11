@@ -99,7 +99,7 @@ namespace Steeltoe.Management.Endpoint
 
             // Assert
             var (middleware, optionsType) = ActuatorRouteBuilderExtensions.LookupMiddleware(type);
-            var options = provider.GetService(optionsType) as IEndpointOptions;
+            var options = provider.FindEndpointOptionsForMiddlewareType(type);
             var mgmtContext = type.IsAssignableFrom(typeof(CloudFoundryEndpoint))
                 ? (IManagementOptions)provider.GetRequiredService<CloudFoundryManagementOptions>()
                 : (IManagementOptions)provider.GetRequiredService<ActuatorManagementOptions>();

@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common;
 using Steeltoe.Extensions.Configuration.Placeholder;
 using Steeltoe.Management.Endpoint.Test;
@@ -19,7 +20,7 @@ namespace Steeltoe.Management.Endpoint.Env.Test
         [Fact]
         public void Constructor_ThrowsIfNulls()
         {
-            IEnvOptions options = null;
+            IOptionsMonitor<EnvEndpointOptions> options = null;
             IConfiguration configuration = null;
             IHostEnvironment env = null;
 

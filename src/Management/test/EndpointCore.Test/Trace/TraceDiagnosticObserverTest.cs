@@ -4,6 +4,7 @@
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Steeltoe.Management.Endpoint.Test;
 using System;
@@ -22,7 +23,7 @@ namespace Steeltoe.Management.Endpoint.Trace.Test
         public void Constructor_ThrowsOnNulls()
         {
             // Arrange
-            ITraceOptions options = null;
+            IOptionsMonitor<TraceEndpointOptions> options = null;
 
             // Act and Assert
             var ex2 = Assert.Throws<ArgumentNullException>(() => new TraceDiagnosticObserver(options));

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace Steeltoe.Management.Endpoint.Mappings
 {
@@ -10,8 +11,8 @@ namespace Steeltoe.Management.Endpoint.Mappings
     {
         private readonly ILogger<MappingsEndpoint> _logger;
 
-        public MappingsEndpoint(IMappingsOptions options, ILogger<MappingsEndpoint> logger = null)
-            : base(options)
+        public MappingsEndpoint(IOptionsMonitor<MappingsEndpointOptions> options, ILogger<MappingsEndpoint> logger = null)
+            : base(options?.CurrentValue)
         {
             _logger = logger;
         }

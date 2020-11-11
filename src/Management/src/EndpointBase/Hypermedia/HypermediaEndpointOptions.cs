@@ -4,10 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Steeltoe.Management.Endpoint.Hypermedia
 {
-    public class HypermediaEndpointOptions : AbstractEndpointOptions, IActuatorHypermediaOptions, IOptions<HypermediaEndpointOptions>
+    public class HypermediaEndpointOptions : AbstractEndpointOptions, IActuatorHypermediaOptions,
+        IOptionsMonitor<HypermediaEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -26,7 +28,10 @@ namespace Steeltoe.Management.Endpoint.Hypermedia
         {
         }
 
-        /// <inheritdoc />
-        public HypermediaEndpointOptions Value => this; // for testing purposes
+        public HypermediaEndpointOptions CurrentValue => this;
+
+        public HypermediaEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<HypermediaEndpointOptions, string> listener) => null;
     }
 }

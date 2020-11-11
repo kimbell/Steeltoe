@@ -11,7 +11,8 @@ using System.Security.Claims;
 
 namespace Steeltoe.Management.Endpoint.Health
 {
-    public class HealthEndpointOptions : AbstractEndpointOptions, IHealthOptions, IOptions<HealthEndpointOptions>
+    public class HealthEndpointOptions : AbstractEndpointOptions, IHealthOptions,
+        IOptionsMonitor<HealthEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -77,7 +78,10 @@ namespace Steeltoe.Management.Endpoint.Health
 
         public Dictionary<string, HealthGroupOptions> Groups { get; set; } = new Dictionary<string, HealthGroupOptions>(StringComparer.InvariantCultureIgnoreCase);
 
-        /// <inheritdoc />
-        public HealthEndpointOptions Value => this; // for testing purposes
+        public HealthEndpointOptions CurrentValue => this;
+
+        public HealthEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<HealthEndpointOptions, string> listener) => null;
     }
 }

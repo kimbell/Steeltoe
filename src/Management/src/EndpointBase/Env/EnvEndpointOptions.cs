@@ -4,10 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Steeltoe.Management.Endpoint.Env
 {
-    public class EnvEndpointOptions : AbstractEndpointOptions, IEnvOptions, IOptions<EnvEndpointOptions>
+    public class EnvEndpointOptions : AbstractEndpointOptions, IEnvOptions,
+        IOptionsMonitor<EnvEndpointOptions>
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -45,7 +47,10 @@ namespace Steeltoe.Management.Endpoint.Env
 
         public string[] KeysToSanitize { get; set; }
 
-        /// <inheritdoc />
-        public EnvEndpointOptions Value => this; // for testing purposes
+        public EnvEndpointOptions CurrentValue => this;
+
+        public EnvEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<EnvEndpointOptions, string> listener) => null;
     }
 }

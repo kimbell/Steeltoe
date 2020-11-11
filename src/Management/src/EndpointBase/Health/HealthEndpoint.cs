@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common.HealthChecks;
 using Steeltoe.Management.Endpoint.Security;
 using System;
@@ -20,8 +21,8 @@ namespace Steeltoe.Management.Endpoint.Health
         private readonly IList<IHealthContributor> _contributors;
         private readonly ILogger<HealthEndpoint> _logger;
 
-        public HealthEndpoint(IHealthOptions options, IHealthAggregator aggregator, IEnumerable<IHealthContributor> contributors, ILogger<HealthEndpoint> logger = null)
-           : base(options)
+        public HealthEndpoint(IOptionsMonitor<HealthEndpointOptions> options, IHealthAggregator aggregator, IEnumerable<IHealthContributor> contributors, ILogger<HealthEndpoint> logger = null)
+           : base(options?.CurrentValue)
         {
             if (contributors == null)
             {

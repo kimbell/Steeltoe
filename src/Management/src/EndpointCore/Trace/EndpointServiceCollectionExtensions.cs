@@ -51,19 +51,19 @@ namespace Steeltoe.Management.Endpoint.Trace
             switch (version)
             {
                 case MediaTypeVersion.V1:
+                    services.AddEndpointEntry<TraceEndpointOptions, TraceEndpoint>(config, TraceEndpointOptions.SECTION_NAME);
+
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IDiagnosticObserver, TraceDiagnosticObserver>());
                     services.TryAddSingleton<ITraceRepository>((p) => p.GetServices<IDiagnosticObserver>().OfType<TraceDiagnosticObserver>().Single());
-                    var options = new TraceEndpointOptions(config);
-                    services.TryAddSingleton<ITraceOptions>(options);
-                    services.RegisterEndpointOptions(options);
-                    services.TryAddSingleton<TraceEndpoint>();
                     break;
                 default:
+                    services.AddEndpointEntry<TraceEndpointOptions, TraceEndpoint>(config, TraceEndpointOptions.SECTION_NAME);
+
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IDiagnosticObserver, HttpTraceDiagnosticObserver>());
-                    var options2 = new HttpTraceEndpointOptions(config);
-                    services.TryAddSingleton<ITraceOptions>(options2);
-                    services.RegisterEndpointOptions(options2);
-                    services.TryAddSingleton(p => new HttpTraceEndpoint(options2, p.GetServices<IDiagnosticObserver>().OfType<HttpTraceDiagnosticObserver>().Single()));
+                    //var options2 = new HttpTraceEndpointOptions(config);
+                    //services.TryAddSingleton<ITraceOptions>(options2);
+                    //services.RegisterEndpointOptions(options2);
+                    //services.TryAddSingleton(p => new HttpTraceEndpoint(options2, p.GetServices<IDiagnosticObserver>().OfType<HttpTraceDiagnosticObserver>().Single()));
                     break;
             }
         }

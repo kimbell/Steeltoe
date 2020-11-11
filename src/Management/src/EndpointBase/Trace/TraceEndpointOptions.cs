@@ -4,10 +4,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using System;
 
 namespace Steeltoe.Management.Endpoint.Trace
 {
-    public class TraceEndpointOptions : AbstractEndpointOptions, ITraceOptions, IOptions<TraceEndpointOptions>
+    public class TraceEndpointOptions : AbstractEndpointOptions, ITraceOptions,
+        IOptionsMonitor<TraceEndpointOptions> // implemented for mocking purposes
     {
         /// <summary>
         /// The name of the configuration section when accessed through <see cref="IConfiguration"/>
@@ -59,7 +61,10 @@ namespace Steeltoe.Management.Endpoint.Trace
 
         public bool AddTimeTaken { get; set; } = true;
 
-        /// <inheritdoc />
-        public TraceEndpointOptions Value => this; // for testing purposes
+        public TraceEndpointOptions CurrentValue => this;
+
+        public TraceEndpointOptions Get(string name) => this;
+
+        public IDisposable OnChange(Action<TraceEndpointOptions, string> listener) => null;
     }
 }
