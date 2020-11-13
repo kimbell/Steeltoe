@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.Test;
 using System;
 using System.Collections.Generic;
@@ -42,10 +43,11 @@ namespace Steeltoe.Management.Endpoint.ThreadDump.Test
             configurationBuilder.AddInMemoryCollection(appSettings);
             var config = configurationBuilder.Build();
 
+            services.AddOptions();
             services.AddThreadDumpActuator(config);
 
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<IThreadDumpOptions>();
+            var options = serviceProvider.GetService<IOptions<ThreadDumpEndpointOptions>>();
             Assert.NotNull(options);
             var repo = serviceProvider.GetService<IThreadDumper>();
             Assert.NotNull(repo);

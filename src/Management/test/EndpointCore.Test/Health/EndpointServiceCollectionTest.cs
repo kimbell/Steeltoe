@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common.Availability;
 using Steeltoe.Common.HealthChecks;
 using Steeltoe.Management.Endpoint.Health.Contributor;
@@ -53,7 +54,7 @@ namespace Steeltoe.Management.Endpoint.Health.Test
 
             services.Configure<HealthCheckServiceOptions>(config);
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<IHealthOptions>();
+            var options = serviceProvider.GetService<IOptions<HealthEndpointOptions>>();
             Assert.NotNull(options);
             var ep = serviceProvider.GetService<HealthEndpointCore>();
             Assert.NotNull(ep);
@@ -83,7 +84,7 @@ namespace Steeltoe.Management.Endpoint.Health.Test
 
             services.Configure<HealthCheckServiceOptions>(config);
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<IHealthOptions>();
+            var options = serviceProvider.GetService<IOptions<HealthEndpointOptions>>();
             Assert.NotNull(options);
             var ep = serviceProvider.GetService<HealthEndpointCore>();
             Assert.NotNull(ep);

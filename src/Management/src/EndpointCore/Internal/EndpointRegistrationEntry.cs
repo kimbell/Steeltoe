@@ -13,11 +13,11 @@ namespace Steeltoe.Management.Endpoint.Internal
 
         public IEndpointOptions Options => _serviceProvider.GetRequiredService<IOptionsMonitor<TOptions>>().CurrentValue;
 
-        public Action<IEndpointRouteBuilder> SetupEndpoint { get; }
+        public Action<IEndpointRouteBuilder, EndpointCollectionConventionBuilder> SetupEndpoint { get; }
 
         public Type EndpointType => typeof(TEndpoint);
 
-        public EndpointRegistrationEntry(IServiceProvider serviceProvider, Action<IEndpointRouteBuilder> setupEndpoint)
+        public EndpointRegistrationEntry(IServiceProvider serviceProvider, Action<IEndpointRouteBuilder, EndpointCollectionConventionBuilder> setupEndpoint)
         {
             _serviceProvider = serviceProvider;
             SetupEndpoint = setupEndpoint;
@@ -37,7 +37,7 @@ namespace Steeltoe.Management.Endpoint.Internal
         /// <summary>
         /// Gets the delegate used to add the endoint in ASP.NET
         /// </summary>
-        Action<IEndpointRouteBuilder> SetupEndpoint { get; }
+        Action<IEndpointRouteBuilder, EndpointCollectionConventionBuilder> SetupEndpoint { get; }
 
         /// <summary>
         /// Gets the type of the endpoint

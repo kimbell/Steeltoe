@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common;
 using Steeltoe.Management.Endpoint.Test;
 using System;
@@ -48,7 +49,7 @@ namespace Steeltoe.Management.Endpoint.Mappings.Test
             services.AddMappingsActuator(config);
 
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<IMappingsOptions>();
+            var options = serviceProvider.GetService<IOptions<MappingsEndpointOptions>>();
             Assert.NotNull(options);
 
             var routeMappings = serviceProvider.GetService<IRouteMappings>();

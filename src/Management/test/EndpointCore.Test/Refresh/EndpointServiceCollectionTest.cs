@@ -42,9 +42,12 @@ namespace Steeltoe.Management.Endpoint.Refresh.Test
             var config = configurationBuilder.Build();
             services.AddSingleton<IConfiguration>(config);
 
+            services.AddOptions();
             services.AddRefreshActuator(config);
 
             var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetService<IRefreshOptions>();
+            Assert.NotNull(options);
             var ep = serviceProvider.GetService<RefreshEndpoint>();
             Assert.NotNull(ep);
         }

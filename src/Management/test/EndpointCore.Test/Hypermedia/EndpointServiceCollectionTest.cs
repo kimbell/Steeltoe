@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.Test;
 using System;
 using System.Collections.Generic;
@@ -40,10 +41,11 @@ namespace Steeltoe.Management.Endpoint.Hypermedia.Test
             configurationBuilder.AddInMemoryCollection(appSettings);
             var config = configurationBuilder.Build();
 
+            services.AddOptions();
             services.AddHypermediaActuator(config);
 
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<IActuatorHypermediaOptions>();
+            var options = serviceProvider.GetService<IOptions<HypermediaEndpointOptions>>();
             Assert.NotNull(options);
             var ep = serviceProvider.GetService<ActuatorEndpoint>();
             Assert.NotNull(ep);

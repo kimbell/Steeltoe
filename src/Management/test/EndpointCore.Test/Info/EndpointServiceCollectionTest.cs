@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.Info.Contributor;
 using Steeltoe.Management.Endpoint.Test;
 using Steeltoe.Management.Info;
@@ -39,7 +40,7 @@ namespace Steeltoe.Management.Endpoint.Info.Test
             services.AddSingleton(logger);
 
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<IInfoOptions>();
+            var options = serviceProvider.GetService<IOptions<InfoEndpointOptions>>();
             Assert.NotNull(options);
             var contribs = serviceProvider.GetServices<IInfoContributor>();
 

@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common;
 using Steeltoe.Common.Diagnostics;
 using Steeltoe.Management.Endpoint.Test;
@@ -49,7 +50,7 @@ namespace Steeltoe.Management.Endpoint.Metrics.Test
             Assert.NotNull(mgr);
             var hst = serviceProvider.GetService<IHostedService>();
             Assert.NotNull(hst);
-            var opts = serviceProvider.GetService<IMetricsObserverOptions>();
+            var opts = serviceProvider.GetService<IOptions<MetricsObserverOptions>>();
             Assert.NotNull(opts);
 
             var observers = serviceProvider.GetServices<IDiagnosticObserver>();

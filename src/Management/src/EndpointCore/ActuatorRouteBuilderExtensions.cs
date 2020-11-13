@@ -64,45 +64,57 @@ namespace Steeltoe.Management.Endpoint
             return MapActuatorEndpoint(endpoints, typeof(TEndpoint), conventionBuilder);
         }
 
+        /// <summary>
+        /// Sets up actuator endpoints.
+        /// Only those actuators that have been registed by calling AddXYZActuator on <see cref="IServiceCollection"/> will be registered.
+        /// </summary>
+        /// <param name="endpoints">A convention builder that applies a convention to the whole collection.</param>
+        /// <param name="version">The media type version. No longer used. Kept for compatibility</param>
         public static IEndpointConventionBuilder MapAllActuators(this IEndpointRouteBuilder endpoints, MediaTypeVersion version = MediaTypeVersion.V2)
         {
             var conventionBuilder = new EndpointCollectionConventionBuilder();
             endpoints.Map<ActuatorEndpoint>(conventionBuilder);
 
-            if (Platform.IsWindows)
+            foreach (var endpointEntry in endpoints.ServiceProvider.GetServices<IEndpointRegistrationEntry>())
             {
-                if (version == MediaTypeVersion.V2)
-                {
-                    endpoints.Map<ThreadDumpEndpoint_v2>(conventionBuilder);
-                }
-                else
-                {
-                    endpoints.Map<ThreadDumpEndpoint>(conventionBuilder);
-                }
+                endpointEntry.SetupEndpoint(endpoints, conventionBuilder);
             }
 
-            if (Platform.IsWindows || Platform.IsLinux)
-            {
-                endpoints.Map<HeapDumpEndpoint>(conventionBuilder);
-            }
 
-            endpoints.Map<EnvEndpoint>(conventionBuilder);
-            endpoints.Map<RefreshEndpoint>(conventionBuilder);
-            endpoints.Map<InfoEndpoint>(conventionBuilder);
-            endpoints.Map<HealthEndpoint>(conventionBuilder);
-            endpoints.Map<LoggersEndpoint>(conventionBuilder);
-            if (version == MediaTypeVersion.V2)
-            {
-                endpoints.Map<HttpTraceEndpoint>(conventionBuilder);
-            }
-            else
-            {
-                endpoints.Map<TraceEndpoint>(conventionBuilder);
-            }
+            //if (Platform.IsWindows)
+            //{
+            //    if (version == MediaTypeVersion.V2)
+            //    {
+            //        endpoints.Map<ThreadDumpEndpoint_v2>(conventionBuilder);
+            //    }
+            //    else
+            //    {
+            //        endpoints.Map<ThreadDumpEndpoint>(conventionBuilder);
+            //    }
+            //}
 
-            endpoints.Map<MappingsEndpoint>(conventionBuilder);
-            endpoints.Map<MetricsEndpoint>(conventionBuilder);
-            endpoints.Map<PrometheusScraperEndpoint>(conventionBuilder);
+            //if (Platform.IsWindows || Platform.IsLinux)
+            //{
+            //    endpoints.Map<HeapDumpEndpoint>(conventionBuilder);
+            //}
+
+            //endpoints.Map<EnvEndpoint>(conventionBuilder);
+            //endpoints.Map<RefreshEndpoint>(conventionBuilder);
+            //endpoints.Map<InfoEndpoint>(conventionBuilder);
+            //endpoints.Map<HealthEndpoint>(conventionBuilder);
+            //endpoints.Map<LoggersEndpoint>(conventionBuilder);
+            //if (version == MediaTypeVersion.V2)
+            //{
+            //    endpoints.Map<HttpTraceEndpoint>(conventionBuilder);
+            //}
+            //else
+            //{
+            //    endpoints.Map<TraceEndpoint>(conventionBuilder);
+            //}
+
+            //endpoints.Map<MappingsEndpoint>(conventionBuilder);
+            //endpoints.Map<MetricsEndpoint>(conventionBuilder);
+            //endpoints.Map<PrometheusScraperEndpoint>(conventionBuilder);
 
             return conventionBuilder;
         }

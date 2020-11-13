@@ -1,8 +1,10 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Steeltoe.Management;
 using Steeltoe.Management.Endpoint;
 using Steeltoe.Management.Endpoint.Internal;
+using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -32,7 +34,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.TryAddScoped<TEndpoint>();
             services.AddSingleton<IEndpointRegistrationEntry>(sp =>
             {
-                return new EndpointRegistrationEntry<TOptions, TEndpoint>(sp, endpoints => endpoints.Map<TEndpoint>());
+                return new EndpointRegistrationEntry<TOptions, TEndpoint>(sp, (endpoints, endpointConventionBuilder) =>
+                {
+                    endpoints.Map<TEndpoint>(endpointConventionBuilder);
+                });
             });
 
             return services;

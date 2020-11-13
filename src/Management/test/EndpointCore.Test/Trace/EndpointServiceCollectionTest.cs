@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.Test;
 using System;
 using System.Collections.Generic;
@@ -45,10 +46,11 @@ namespace Steeltoe.Management.Endpoint.Trace.Test
             var listener = new DiagnosticListener("Test");
             services.AddSingleton(listener);
 
+            services.AddOptions();
             services.AddTraceActuator(config);
 
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<ITraceOptions>();
+            var options = serviceProvider.GetService<IOptions<TraceEndpointOptions>>();
             Assert.NotNull(options);
             var ep = serviceProvider.GetService<HttpTraceEndpoint>();
             Assert.NotNull(ep);

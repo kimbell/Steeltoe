@@ -5,6 +5,7 @@
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.Test;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,8 @@ namespace Steeltoe.Management.Endpoint.DbMigrations.Test
             services.AddDbMigrationsActuator(config);
 
             var serviceProvider = services.BuildServiceProvider();
+            var options = serviceProvider.GetService<IOptions<DbMigrationsEndpointOptions>>();
+            options.Should().NotBeNull();
             var ep = serviceProvider.GetService<DbMigrationsEndpoint>();
             ep.Should().NotBeNull();
         }

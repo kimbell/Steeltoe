@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Extensions.Logging;
 using Steeltoe.Management.Endpoint.Test;
 using System;
@@ -54,7 +55,7 @@ namespace Steeltoe.Management.Endpoint.Loggers.Test
             var serviceProvider = services.BuildServiceProvider();
 
             // act
-            var options = serviceProvider.GetService<ILoggersOptions>();
+            var options = serviceProvider.GetService<IOptions<LoggersEndpointOptions>>();
             var ep = serviceProvider.GetService<LoggersEndpoint>();
 
             // assert

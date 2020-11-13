@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common;
 using Steeltoe.Management.Endpoint.Test;
 using System;
@@ -50,7 +51,7 @@ namespace Steeltoe.Management.Endpoint.Env.Test
             services.AddEnvActuator(config);
 
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<IEnvOptions>();
+            var options = serviceProvider.GetService<IOptions<EnvEndpointOptions>>();
             Assert.NotNull(options);
             var ep = serviceProvider.GetService<EnvEndpoint>();
             Assert.NotNull(ep);

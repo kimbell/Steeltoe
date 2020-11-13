@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.Test;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace Steeltoe.Management.Endpoint.HeapDump.Test
                 services.AddHeapDumpActuator(config);
 
                 var serviceProvider = services.BuildServiceProvider();
-                var options = serviceProvider.GetService<IHeapDumpOptions>();
+                var options = serviceProvider.GetService<IOptions<HeapDumpEndpointOptions>>();
                 Assert.NotNull(options);
                 var repo = serviceProvider.GetService<IHeapDumper>();
                 Assert.NotNull(repo);

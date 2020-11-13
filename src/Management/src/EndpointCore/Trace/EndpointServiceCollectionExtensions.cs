@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common.Diagnostics;
 using Steeltoe.Management.Endpoint.Diagnostics;
 using Steeltoe.Management.Endpoint.Hypermedia;
@@ -57,13 +58,14 @@ namespace Steeltoe.Management.Endpoint.Trace
                     services.TryAddSingleton<ITraceRepository>((p) => p.GetServices<IDiagnosticObserver>().OfType<TraceDiagnosticObserver>().Single());
                     break;
                 default:
-                    services.AddEndpointEntry<TraceEndpointOptions, TraceEndpoint>(config, TraceEndpointOptions.SECTION_NAME);
-
+                    services.AddEndpointEntry<HttpTraceEndpointOptions, HttpTraceEndpoint>(config, HttpTraceEndpointOptions.SECTION_NAME);
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IDiagnosticObserver, HttpTraceDiagnosticObserver>());
-                    //var options2 = new HttpTraceEndpointOptions(config);
-                    //services.TryAddSingleton<ITraceOptions>(options2);
-                    //services.RegisterEndpointOptions(options2);
-                    //services.TryAddSingleton(p => new HttpTraceEndpoint(options2, p.GetServices<IDiagnosticObserver>().OfType<HttpTraceDiagnosticObserver>().Single()));
+                    services.TryAddSingleton<IHttpTraceRepository>((p) => p.GetServices<IDiagnosticObserver>().OfType<HttpTraceDiagnosticObserver>().Single());
+
+                    services.TryAddSingleton(p =>
+                        new HttpTraceEndpoint(
+                            p.GetService<IOptionsMonitor<HttpTraceEndpointOptions>>(),
+                            p.GetServices<IDiagnosticObserver>().OfType<HttpTraceDiagnosticObserver>().Single()));
                     break;
             }
         }

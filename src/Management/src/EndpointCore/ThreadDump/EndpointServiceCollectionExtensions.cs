@@ -5,6 +5,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Steeltoe.Common;
 using Steeltoe.Management.Endpoint.Hypermedia;
 using System;
 
@@ -35,6 +36,11 @@ namespace Steeltoe.Management.Endpoint.ThreadDump
                 throw new ArgumentNullException(nameof(config));
             }
 
+            if (Platform.IsWindows == false)
+            {
+                return; // heap dump is currently only available on windows
+            }
+
             services.AddActuatorManagementOptions(config);
             if (version == MediaTypeVersion.V1)
             {
@@ -42,12 +48,8 @@ namespace Steeltoe.Management.Endpoint.ThreadDump
             }
             else
             {
-                // CRK TODO
-                // if (options.Id == "dump")
-                // {
-                //     options.Id = "threaddump";
-                // }
                 services.AddEndpointEntry<ThreadDumpEndpointOptions, ThreadDumpEndpoint_v2>(config, ThreadDumpEndpointOptions.SECTION_NAME);
+                services.PostConfigure<ThreadDumpEndpointOptions>(options => options.Id = "threaddump");
             }
 
             services.TryAddSingleton<IThreadDumper, ThreadDumper>();

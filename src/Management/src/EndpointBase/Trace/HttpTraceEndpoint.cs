@@ -13,7 +13,7 @@ namespace Steeltoe.Management.Endpoint.Trace
         private readonly ILogger<HttpTraceEndpoint> _logger;
         private readonly IHttpTraceRepository _traceRepo;
 
-        public HttpTraceEndpoint(IOptionsMonitor<TraceEndpointOptions> options, IHttpTraceRepository traceRepository, ILogger<HttpTraceEndpoint> logger = null)
+        public HttpTraceEndpoint(IOptionsMonitor<HttpTraceEndpointOptions> options, IHttpTraceRepository traceRepository, ILogger<HttpTraceEndpoint> logger = null)
             : base(options?.CurrentValue)
         {
             _traceRepo = traceRepository ?? throw new ArgumentNullException(nameof(traceRepository));
