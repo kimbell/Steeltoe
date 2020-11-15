@@ -4,6 +4,7 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.Test;
 using System;
 using System.Collections.Generic;
@@ -46,7 +47,7 @@ namespace Steeltoe.Management.Endpoint.Refresh.Test
             services.AddRefreshActuator(config);
 
             var serviceProvider = services.BuildServiceProvider();
-            var options = serviceProvider.GetService<IRefreshOptions>();
+            var options = serviceProvider.GetService<IOptionsMonitor<RefreshEndpointOptions>>();
             Assert.NotNull(options);
             var ep = serviceProvider.GetService<RefreshEndpoint>();
             Assert.NotNull(ep);

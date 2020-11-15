@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Steeltoe.Management.Endpoint.ContentNegotiation;
 using Steeltoe.Management.Endpoint.Middleware;
 using System.Collections.Generic;
@@ -25,12 +26,12 @@ namespace Steeltoe.Management.Endpoint.Mappings
         private readonly RequestDelegate _next;
         private readonly IActionDescriptorCollectionProvider _actionDescriptorCollectionProvider;
         private readonly IEnumerable<IApiDescriptionProvider> _apiDescriptionProviders;
-        private readonly IMappingsOptions _options;
+        private readonly IOptionsMonitor<MappingsEndpointOptions> _options;
         private readonly IRouteMappings _routeMappings;
 
         public MappingsEndpointMiddleware(
             RequestDelegate next,
-            IMappingsOptions options,
+            IOptionsMonitor<MappingsEndpointOptions> options,
             IManagementOptions mgmtOptions,
             MappingsEndpoint endpoint,
             IRouteMappings routeMappings = null,

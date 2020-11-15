@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common;
 using Steeltoe.Extensions.Logging;
 using Steeltoe.Management.Endpoint.CloudFoundry;
@@ -82,6 +83,7 @@ namespace Steeltoe.Management.Endpoint
                     builder.UseTestServer()
                     .ConfigureServices((context, s) =>
                     {
+                        s.AddLogging();
                         s.AddRouting();
                         s.AddTraceActuator(context.Configuration, MediaTypeVersion.V1);
                         s.AddThreadDumpActuator(context.Configuration, MediaTypeVersion.V1);
@@ -99,11 +101,11 @@ namespace Steeltoe.Management.Endpoint
 
             // Assert
             var (middleware, optionsType) = ActuatorRouteBuilderExtensions.LookupMiddleware(type);
-            var options = provider.FindEndpointOptionsForMiddlewareType(type);
+            var options = provider.GetService(optionsType) as IOptionsMonitor<IEndpointOptions>;// .FindEndpointOptionsForMiddlewareType(type);
             var mgmtContext = type.IsAssignableFrom(typeof(CloudFoundryEndpoint))
                 ? (IManagementOptions)provider.GetRequiredService<CloudFoundryManagementOptions>()
                 : (IManagementOptions)provider.GetRequiredService<ActuatorManagementOptions>();
-            var path = options.GetContextPath(mgmtContext);
+            var path = options.CurrentValue.GetContextPath(mgmtContext);
             Assert.NotNull(path);
 
             var response = host.GetTestServer().CreateClient().GetAsync(path);

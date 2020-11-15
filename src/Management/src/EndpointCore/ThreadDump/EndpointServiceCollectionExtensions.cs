@@ -49,7 +49,11 @@ namespace Steeltoe.Management.Endpoint.ThreadDump
             else
             {
                 services.AddEndpointEntry<ThreadDumpEndpointOptions, ThreadDumpEndpoint_v2>(config, ThreadDumpEndpointOptions.SECTION_NAME);
-                services.PostConfigure<ThreadDumpEndpointOptions>(options => options.Id = "threaddump");
+                services.PostConfigure<ThreadDumpEndpointOptions>(options =>
+                {
+                    options.Id = "threaddump";
+                    options.Path = "threaddump";
+                });
             }
 
             services.TryAddSingleton<IThreadDumper, ThreadDumper>();

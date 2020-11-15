@@ -3,8 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Steeltoe.Common;
 using Steeltoe.Management.Endpoint.CloudFoundry;
 using Steeltoe.Management.Endpoint.DbMigrations;
@@ -31,22 +33,23 @@ namespace Steeltoe.Management.Endpoint
         {
             return endpointType switch
             {
-                Type _ when endpointType.IsAssignableFrom(typeof(ActuatorEndpoint)) => (typeof(ActuatorHypermediaEndpointMiddleware), typeof(IActuatorHypermediaOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(DbMigrationsEndpoint)) => (typeof(DbMigrationsEndpointMiddleware), typeof(IDbMigrationsOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(EnvEndpoint)) => (typeof(EnvEndpointMiddleware), typeof(IEnvOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(HealthEndpointCore)) => (typeof(HealthEndpointMiddleware), typeof(IHealthOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(HeapDumpEndpoint)) => (typeof(HeapDumpEndpointMiddleware), typeof(IHeapDumpOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(InfoEndpoint)) => (typeof(InfoEndpointMiddleware), typeof(IInfoOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(LoggersEndpoint)) => (typeof(LoggersEndpointMiddleware), typeof(ILoggersOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(MappingsEndpoint)) => (typeof(MappingsEndpointMiddleware), typeof(IMappingsOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(MetricsEndpoint)) => (typeof(MetricsEndpointMiddleware), typeof(IMetricsEndpointOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(PrometheusScraperEndpoint)) => (typeof(PrometheusScraperEndpointMiddleware), typeof(IPrometheusEndpointOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(RefreshEndpoint)) => (typeof(RefreshEndpointMiddleware), typeof(IRefreshOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(ThreadDumpEndpoint)) => (typeof(ThreadDumpEndpointMiddleware), typeof(IThreadDumpOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(ThreadDumpEndpoint_v2)) => (typeof(ThreadDumpEndpointMiddleware_v2), typeof(IThreadDumpOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(TraceEndpoint)) => (typeof(TraceEndpointMiddleware), typeof(ITraceOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(HttpTraceEndpoint)) => (typeof(HttpTraceEndpointMiddleware), typeof(ITraceOptions)),
-                Type _ when endpointType.IsAssignableFrom(typeof(CloudFoundryEndpoint)) => (typeof(CloudFoundryEndpointMiddleware), typeof(ICloudFoundryOptions)),
+                Type _ when endpointType.IsAssignableFrom(typeof(ActuatorEndpoint)) => (typeof(ActuatorHypermediaEndpointMiddleware), typeof(IOptionsMonitor<HypermediaEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(DbMigrationsEndpoint)) => (typeof(DbMigrationsEndpointMiddleware), typeof(IOptionsMonitor<DbMigrationsEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(EnvEndpoint)) => (typeof(EnvEndpointMiddleware), typeof(IOptionsMonitor<EnvEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(HealthEndpointCore)) => (typeof(HealthEndpointMiddleware), typeof(IOptionsMonitor<HealthEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(HealthEndpoint)) => (typeof(HealthEndpointMiddleware), typeof(IOptionsMonitor<HealthEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(HeapDumpEndpoint)) => (typeof(HeapDumpEndpointMiddleware), typeof(IOptionsMonitor<HeapDumpEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(InfoEndpoint)) => (typeof(InfoEndpointMiddleware), typeof(IOptionsMonitor<InfoEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(LoggersEndpoint)) => (typeof(LoggersEndpointMiddleware), typeof(IOptionsMonitor<LoggersEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(MappingsEndpoint)) => (typeof(MappingsEndpointMiddleware), typeof(IOptionsMonitor<MappingsEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(MetricsEndpoint)) => (typeof(MetricsEndpointMiddleware), typeof(IOptionsMonitor<MetricsEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(PrometheusScraperEndpoint)) => (typeof(PrometheusScraperEndpointMiddleware), typeof(IOptionsMonitor<PrometheusEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(RefreshEndpoint)) => (typeof(RefreshEndpointMiddleware), typeof(IOptionsMonitor<RefreshEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(ThreadDumpEndpoint)) => (typeof(ThreadDumpEndpointMiddleware), typeof(IOptionsMonitor<ThreadDumpEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(ThreadDumpEndpoint_v2)) => (typeof(ThreadDumpEndpointMiddleware_v2), typeof(IOptionsMonitor<ThreadDumpEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(TraceEndpoint)) => (typeof(TraceEndpointMiddleware), typeof(IOptionsMonitor<TraceEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(HttpTraceEndpoint)) => (typeof(HttpTraceEndpointMiddleware), typeof(IOptionsMonitor<HttpTraceEndpointOptions>)),
+                Type _ when endpointType.IsAssignableFrom(typeof(CloudFoundryEndpoint)) => (typeof(CloudFoundryEndpointMiddleware), typeof(IOptionsMonitor<CloudFoundryEndpointOptions>)),
                 _ => throw new InvalidOperationException($"Could not find middleware for Type: {endpointType.Name} "),
             };
         }
@@ -80,42 +83,6 @@ namespace Steeltoe.Management.Endpoint
                 endpointEntry.SetupEndpoint(endpoints, conventionBuilder);
             }
 
-
-            //if (Platform.IsWindows)
-            //{
-            //    if (version == MediaTypeVersion.V2)
-            //    {
-            //        endpoints.Map<ThreadDumpEndpoint_v2>(conventionBuilder);
-            //    }
-            //    else
-            //    {
-            //        endpoints.Map<ThreadDumpEndpoint>(conventionBuilder);
-            //    }
-            //}
-
-            //if (Platform.IsWindows || Platform.IsLinux)
-            //{
-            //    endpoints.Map<HeapDumpEndpoint>(conventionBuilder);
-            //}
-
-            //endpoints.Map<EnvEndpoint>(conventionBuilder);
-            //endpoints.Map<RefreshEndpoint>(conventionBuilder);
-            //endpoints.Map<InfoEndpoint>(conventionBuilder);
-            //endpoints.Map<HealthEndpoint>(conventionBuilder);
-            //endpoints.Map<LoggersEndpoint>(conventionBuilder);
-            //if (version == MediaTypeVersion.V2)
-            //{
-            //    endpoints.Map<HttpTraceEndpoint>(conventionBuilder);
-            //}
-            //else
-            //{
-            //    endpoints.Map<TraceEndpoint>(conventionBuilder);
-            //}
-
-            //endpoints.Map<MappingsEndpoint>(conventionBuilder);
-            //endpoints.Map<MetricsEndpoint>(conventionBuilder);
-            //endpoints.Map<PrometheusScraperEndpoint>(conventionBuilder);
-
             return conventionBuilder;
         }
 
@@ -127,7 +94,7 @@ namespace Steeltoe.Management.Endpoint
             }
 
             var (middleware, optionsType) = LookupMiddleware(typeEndpoint);
-            var options = endpoints.ServiceProvider.FindEndpointOptionsForMiddlewareType(typeEndpoint);
+            var options = endpoints.ServiceProvider.GetService(optionsType) as IOptionsMonitor<IEndpointOptions>; // .FindEndpointOptionsForMiddlewareType(typeEndpoint);
             var mgmtOptionsCollection = endpoints.ServiceProvider.GetServices<IManagementOptions>();
             var builder = conventionBuilder ?? new EndpointCollectionConventionBuilder();
 
@@ -139,12 +106,12 @@ namespace Steeltoe.Management.Endpoint
                     continue;
                 }
 
-                var fullPath = options.GetContextPath(mgmtOptions);
+                var fullPath = options.CurrentValue.GetContextPath(mgmtOptions);
 
                 var pipeline = endpoints.CreateApplicationBuilder()
                     .UseMiddleware(middleware, mgmtOptions)
                     .Build();
-                var allowedVerbs = options.AllowedVerbs ?? new List<string> { "Get" };
+                var allowedVerbs = options.CurrentValue.AllowedVerbs ?? new List<string> { "Get" };
 
                 builder.AddConventionBuilder(endpoints.MapMethods(fullPath, allowedVerbs, pipeline));
             }
