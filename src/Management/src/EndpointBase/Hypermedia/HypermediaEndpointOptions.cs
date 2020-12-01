@@ -28,10 +28,13 @@ namespace Steeltoe.Management.Endpoint.Hypermedia
         {
         }
 
-        public HypermediaEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        HypermediaEndpointOptions IOptionsMonitor<HypermediaEndpointOptions>.CurrentValue => this;
 
-        public HypermediaEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        HypermediaEndpointOptions IOptionsMonitor<HypermediaEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<HypermediaEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<HypermediaEndpointOptions>.OnChange(Action<HypermediaEndpointOptions, string> listener) => null;
     }
 }

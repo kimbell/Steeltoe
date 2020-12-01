@@ -2,6 +2,8 @@
 // The .NET Foundation licenses this file to you under the Apache 2.0 License.
 // See the LICENSE file in the project root for more information.
 
+using System.Collections.Generic;
+
 namespace Steeltoe.Management
 {
     public interface IEndpoint
@@ -13,6 +15,16 @@ namespace Steeltoe.Management
         IEndpointOptions Options { get; }
 
         string Path { get; }
+
+        /// <summary>
+        /// Gets the list of verbs this enpoint responds to
+        /// </summary>
+        IEnumerable<string> AllowedVerbs { get; }
+
+        /// <summary>
+        /// Gets a value indicating whethere an exact path match is required
+        /// </summary>
+        bool ExactMatch { get; }
     }
 
     public interface IEndpoint<out TResult> : IEndpoint

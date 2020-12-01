@@ -78,10 +78,13 @@ namespace Steeltoe.Management.Endpoint.Health
 
         public Dictionary<string, HealthGroupOptions> Groups { get; set; } = new Dictionary<string, HealthGroupOptions>(StringComparer.InvariantCultureIgnoreCase);
 
-        public HealthEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        HealthEndpointOptions IOptionsMonitor<HealthEndpointOptions>.CurrentValue => this;
 
-        public HealthEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        HealthEndpointOptions IOptionsMonitor<HealthEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<HealthEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<HealthEndpointOptions>.OnChange(Action<HealthEndpointOptions, string> listener) => null;
     }
 }

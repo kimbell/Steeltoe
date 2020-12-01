@@ -32,10 +32,13 @@ namespace Steeltoe.Management.Endpoint.HeapDump
             }
         }
 
-        public HeapDumpEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        HeapDumpEndpointOptions IOptionsMonitor<HeapDumpEndpointOptions>.CurrentValue => this;
 
-        public HeapDumpEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        HeapDumpEndpointOptions IOptionsMonitor<HeapDumpEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<HeapDumpEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<HeapDumpEndpointOptions>.OnChange(Action<HeapDumpEndpointOptions, string> listener) => null;
     }
 }

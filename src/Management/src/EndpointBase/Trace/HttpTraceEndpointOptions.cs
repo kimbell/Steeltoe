@@ -61,10 +61,13 @@ namespace Steeltoe.Management.Endpoint.Trace
 
         public bool AddTimeTaken { get; set; } = true;
 
-        public HttpTraceEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        HttpTraceEndpointOptions IOptionsMonitor<HttpTraceEndpointOptions>.CurrentValue => this;
 
-        public HttpTraceEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        HttpTraceEndpointOptions IOptionsMonitor<HttpTraceEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<HttpTraceEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<HttpTraceEndpointOptions>.OnChange(Action<HttpTraceEndpointOptions, string> listener) => null;
     }
 }

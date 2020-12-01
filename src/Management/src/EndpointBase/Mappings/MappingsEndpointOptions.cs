@@ -38,10 +38,13 @@ namespace Steeltoe.Management.Endpoint.Mappings
             }
         }
 
-        public MappingsEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        MappingsEndpointOptions IOptionsMonitor<MappingsEndpointOptions>.CurrentValue => this;
 
-        public MappingsEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        MappingsEndpointOptions IOptionsMonitor<MappingsEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<MappingsEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<MappingsEndpointOptions>.OnChange(Action<MappingsEndpointOptions, string> listener) => null;
     }
 }

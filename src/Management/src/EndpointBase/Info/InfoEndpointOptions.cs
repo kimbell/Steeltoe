@@ -38,10 +38,13 @@ namespace Steeltoe.Management.Endpoint.Info
             }
         }
 
-        public InfoEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        InfoEndpointOptions IOptionsMonitor<InfoEndpointOptions>.CurrentValue => this;
 
-        public InfoEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        InfoEndpointOptions IOptionsMonitor<InfoEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<InfoEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<InfoEndpointOptions>.OnChange(Action<InfoEndpointOptions, string> listener) => null;
     }
 }

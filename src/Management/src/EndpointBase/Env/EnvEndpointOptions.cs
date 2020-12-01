@@ -47,10 +47,13 @@ namespace Steeltoe.Management.Endpoint.Env
 
         public string[] KeysToSanitize { get; set; }
 
-        public EnvEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        EnvEndpointOptions IOptionsMonitor<EnvEndpointOptions>.CurrentValue => this;
 
-        public EnvEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        EnvEndpointOptions IOptionsMonitor<EnvEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<EnvEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<EnvEndpointOptions>.OnChange(Action<EnvEndpointOptions, string> listener) => null;
     }
 }

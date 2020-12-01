@@ -53,10 +53,13 @@ namespace Steeltoe.Management.Endpoint.Metrics
 
         public string EgressIgnorePattern { get; set; }
 
-        public MetricsEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        MetricsEndpointOptions IOptionsMonitor<MetricsEndpointOptions>.CurrentValue => this;
 
-        public MetricsEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        MetricsEndpointOptions IOptionsMonitor<MetricsEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<MetricsEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<MetricsEndpointOptions>.OnChange(Action<MetricsEndpointOptions, string> listener) => null;
     }
 }

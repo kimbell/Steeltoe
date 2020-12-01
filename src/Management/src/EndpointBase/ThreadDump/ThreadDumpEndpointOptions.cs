@@ -32,10 +32,13 @@ namespace Steeltoe.Management.Endpoint.ThreadDump
             }
         }
 
-        public ThreadDumpEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        ThreadDumpEndpointOptions IOptionsMonitor<ThreadDumpEndpointOptions>.CurrentValue => this;
 
-        public ThreadDumpEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        ThreadDumpEndpointOptions IOptionsMonitor<ThreadDumpEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<ThreadDumpEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<ThreadDumpEndpointOptions>.OnChange(Action<ThreadDumpEndpointOptions, string> listener) => null;
     }
 }

@@ -40,10 +40,13 @@ namespace Steeltoe.Management.Endpoint.CloudFoundry
 
         public string CloudFoundryApi { get; set; }
 
-        public CloudFoundryEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        CloudFoundryEndpointOptions IOptionsMonitor<CloudFoundryEndpointOptions>.CurrentValue => this;
 
-        public CloudFoundryEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        CloudFoundryEndpointOptions IOptionsMonitor<CloudFoundryEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<CloudFoundryEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<CloudFoundryEndpointOptions>.OnChange(Action<CloudFoundryEndpointOptions, string> listener) => null;
     }
 }

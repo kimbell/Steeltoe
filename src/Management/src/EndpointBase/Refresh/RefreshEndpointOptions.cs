@@ -38,10 +38,13 @@ namespace Steeltoe.Management.Endpoint.Refresh
             }
         }
 
-        public RefreshEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        RefreshEndpointOptions IOptionsMonitor<RefreshEndpointOptions>.CurrentValue => this;
 
-        public RefreshEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        RefreshEndpointOptions IOptionsMonitor<RefreshEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<RefreshEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<RefreshEndpointOptions>.OnChange(Action<RefreshEndpointOptions, string> listener) => null;
     }
 }

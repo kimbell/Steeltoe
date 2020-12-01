@@ -37,6 +37,10 @@ namespace Steeltoe.Management.Endpoint.Loggers
             _logger = logger;
         }
 
+        public IEnumerable<string> AllowedVerbs => new List<string> { "Get", "Post" };
+
+        public bool ExactMatch => false;
+
         protected new ILoggersOptions Options
         {
             get

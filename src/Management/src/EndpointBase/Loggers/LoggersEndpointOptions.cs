@@ -38,10 +38,13 @@ namespace Steeltoe.Management.Endpoint.Loggers
             ExactMatch = false;
         }
 
-        public LoggersEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        LoggersEndpointOptions IOptionsMonitor<LoggersEndpointOptions>.CurrentValue => this;
 
-        public LoggersEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        LoggersEndpointOptions IOptionsMonitor<LoggersEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<LoggersEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<LoggersEndpointOptions>.OnChange(Action<LoggersEndpointOptions, string> listener) => null;
     }
 }

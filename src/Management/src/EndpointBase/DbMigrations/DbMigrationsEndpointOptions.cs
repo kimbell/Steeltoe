@@ -39,10 +39,13 @@ namespace Steeltoe.Management.Endpoint.DbMigrations
 
         public string[] KeysToSanitize => Array.Empty<string>();
 
-        public DbMigrationsEndpointOptions CurrentValue => this;
+        /// <inheritdoc/>
+        DbMigrationsEndpointOptions IOptionsMonitor<DbMigrationsEndpointOptions>.CurrentValue => this;
 
-        public DbMigrationsEndpointOptions Get(string name) => this;
+        /// <inheritdoc/>
+        DbMigrationsEndpointOptions IOptionsMonitor<DbMigrationsEndpointOptions>.Get(string name) => this;
 
-        public IDisposable OnChange(Action<DbMigrationsEndpointOptions, string> listener) => null;
+        /// <inheritdoc/>
+        IDisposable IOptionsMonitor<DbMigrationsEndpointOptions>.OnChange(Action<DbMigrationsEndpointOptions, string> listener) => null;
     }
 }

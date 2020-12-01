@@ -30,7 +30,7 @@ namespace Steeltoe.Management.CloudFoundry.Test
             ["management:endpoints:path"] = "/testing",
         };
 
-        private Action<IWebHostBuilder> testServerWithRouting = builder => builder.UseTestServer().ConfigureServices(s => s.AddRouting()).Configure(a => a.UseRouting());
+        private Action<IWebHostBuilder> testServerWithRouting = builder => builder.UseTestServer().ConfigureServices(s => s.AddRouting().AddLogging()).Configure(a => a.UseRouting());
 
         [Fact]
         public void AddCloudFoundryActuators_IWebHostBuilder()
