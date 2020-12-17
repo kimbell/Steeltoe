@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netcoreapp3.1;net5.0;</TargetFrameworks>
+    <RootNamespace>Steeltoe.Management.Endpoint.Test</RootNamespace>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <Import Project="..\..\..\..\versions.props" />
+  <Import Project="..\..\..\..\sharedtest.props" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\EndpointCore\Steeltoe.Management.EndpointCore.csproj" />
+    <ProjectReference Include="..\..\src\Endpoint\Steeltoe.Management.Endpoint.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.9" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Actuator\Health\" />
+    <Folder Include="Actuator\HeapDump\" />
+  </ItemGroup>
+
+</Project>
